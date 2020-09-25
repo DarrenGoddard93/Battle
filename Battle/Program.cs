@@ -24,7 +24,6 @@ namespace Battle
 
         static void Introduction()
         {
-         //   Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Title = "Battleships C# Game";
             Console.WriteLine("Welcome to my Battleships Game!\n"+
             "There are 3 ships hidden in the grid ... Find all 3 ships to win!\n\n"+
@@ -34,7 +33,6 @@ namespace Battle
             "Press enter to play");
             Console.ReadLine();
             Console.Clear();
-
         }
 
     }

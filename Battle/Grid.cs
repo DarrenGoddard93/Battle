@@ -61,18 +61,58 @@ namespace Battle
          };
 
 
+
+        public bool CanPlaceShip(int direction, int randomCol, int randomRow)
+        {
+            int c;
+            int r;
+
+            foreach (var Ship in Ships)
+            {
+                if (direction == 0)
+                {
+                    for (c = randomCol; c < randomCol + Ship.Length; c++)
+                    {
+                        if (grid[randomRow, c] == Ship.Symbol)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (r = randomRow; r < randomRow + Ship.Length; r++)
+                    {
+                        if (grid[r, randomCol] == Ship.Symbol)
+                        {
+                            return false;
+                        }
+                    }                 
+                }          
+            }
+            return true;
+        }
+
+
         public void PlaceShipsOnGrid()
         {
             foreach (var Ship in Ships)
             {
                 bool isOpen = true;
-
                 while (isOpen)
                 {
                     Random rand = new Random();
                     int randomCol = rand.Next(0, 10);
                     int randomRow = rand.Next(0, 10);
                     int direction = rand.Next(0, 2); //0 for Horizontal
+
+                    int c;
+                    int r;
+
+                    Console.WriteLine($"My ship will take Col (x coord) {randomCol}");
+                    Console.WriteLine($"My ship will take row (y cord) {randomRow}");
+                    Console.WriteLine($"My direction will be {direction}");
+                    Console.ReadLine();
 
                     if (direction == 0)
                     {
@@ -81,21 +121,21 @@ namespace Battle
                             isOpen = true;
                             continue;
                         }
-                        else if(randomCol + Ship.Length == Ship.Symbol && randomRow + Ship.Length == Ship.Symbol)
+                        else if(CanPlaceShip(direction,randomCol,randomRow) == false)
                         {
                             isOpen = true;
-                            continue;
+                                continue;
                         }
                         else
                         {
-                            int c;
                             for (c = randomCol; c < randomCol + Ship.Length; c++)
                             {
-                                grid[randomRow, c] = Ship.Symbol;
-                            }
+                               grid[randomRow, c] = Ship.Symbol;                              
+                            }                          
                         }
                         isOpen = false;
                     }
+
                     else
                     {
                         if (randomRow + Ship.Length > 10)
@@ -103,21 +143,21 @@ namespace Battle
                             isOpen = true;
                             continue;
                         }
-                        else if (randomRow + Ship.Length == Ship.Symbol && randomCol + Ship.Length == Ship.Symbol)
+                        else if (CanPlaceShip(direction, randomCol, randomRow) == false)
                         {
                             isOpen = true;
                             continue;
                         }
                         else
                         {
-                            int c;
-                            for (c = randomRow; c < randomRow + Ship.Length; c++)
+                            for (r = randomRow; r < randomRow + Ship.Length; r++)
                             {
-                                grid[c, randomCol] = Ship.Symbol;
+                                grid[r, randomCol] = Ship.Symbol;
                             }
                         }
                         isOpen = false;
                     }
+                   
                 }
             }
         }
@@ -177,12 +217,10 @@ namespace Battle
                     ocean[fireY, fireX] = Ships[0].Symbol;
                     Console.Clear();
                     DrawOcean();
-                }
-                
+                }           
             }           
-            Console.WriteLine("You hit all the ships! YOU WIN!");
+            Console.WriteLine("\n" + "You hit all the ships! YOU WIN!");
             Console.ReadLine();            
-
         }
 
         
@@ -207,7 +245,6 @@ namespace Battle
                 Console.WriteLine("This is not a number! Enter a number between 0 and 9!");
                 AskXCoordinate();
             }
-
         }
 
 
