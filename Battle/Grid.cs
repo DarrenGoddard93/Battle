@@ -36,6 +36,7 @@ namespace Battle
                 {'0','0','0','0','0','0','0','0','0','0'}
         };
 
+
         public void DrawOcean()
         {
             Console.WriteLine("Guess the co-ordinates: \n");
@@ -52,14 +53,16 @@ namespace Battle
             }    
         }
 
-         List<Ship> Ships = new List<Ship>
+         public List<Ship> Ships = new List<Ship>
          {
             new Ship("Destroyer", 5, 'D'),    //Ship[0]
             new Ship("Battleship", 4, 'B'),   //Ship[1]
             new Ship("Submarine", 3, 'S'),    //Ship[2]
          };
 
-        public bool CanPlaceShip(int direction, int randomCol, int randomRow)
+
+
+        public bool CanPlaceShip(int direction, int randomX, int randomY)
         {
             int c;
             int r;
@@ -68,23 +71,37 @@ namespace Battle
             {
                 if (direction == 0)
                 {
-                    for (c = randomCol; c < randomCol + Ship.Length; c++)
+                    if (randomX + Ship.Length > 9)
                     {
-                        if (grid[randomRow, c] == Ship.Symbol)
+                        return false;
+                    }
+                    else
+                    {
+                        for (c = randomX; c < randomX + Ship.Length; c++)
                         {
-                            return false;
+                            if (grid[randomY, c] == Ship.Symbol)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
                 else
                 {
-                    for (r = randomRow; r < randomRow + Ship.Length; r++)
+                    if (randomY + Ship.Length > 9)
                     {
-                        if (grid[r, randomCol] == Ship.Symbol)
+                        return false;
+                    }
+                    else
+                    {
+                        for (r = randomY; r < randomY + Ship.Length; r++)
                         {
-                            return false;
+                            if (grid[r, randomX] == Ship.Symbol)
+                            {
+                                return false;
+                            }
                         }
-                    }                 
+                    }
                 }          
             }
             return true;
@@ -99,58 +116,48 @@ namespace Battle
                 while (isOpen)
                 {
                     Random rand = new Random();
-                    int randomCol = rand.Next(0, 10);
-                    int randomRow = rand.Next(0, 10);
                     int direction = rand.Next(0, 2); //0 for Horizontal
+                    int randomX = rand.Next(0, 10);
+                    int randomY = rand.Next(0, 10);
                     int c;
                     int r;
 
                     if (direction == 0)
                     {
-                        if (randomCol + Ship.Length > 10)
+                        if(CanPlaceShip(direction,randomX,randomY) == false)
                         {
                             isOpen = true;
                             continue;
                         }
-                        else if(CanPlaceShip(direction,randomCol,randomRow) == false)
-                        {
-                            isOpen = true;
-                                continue;
-                        }
                         else
                         {
-                            for (c = randomCol; c < randomCol + Ship.Length; c++)
+                            for (c = randomX; c < randomX + Ship.Length; c++)
                             {
-                               grid[randomRow, c] = Ship.Symbol;                              
+                               grid[randomY, c] = Ship.Symbol;                              
                             }                          
                         }
                         isOpen = false;
                     }
-
                     else
                     {
-                        if (randomRow + Ship.Length > 10)
-                        {
-                            isOpen = true;
-                            continue;
-                        }
-                        else if (CanPlaceShip(direction, randomCol, randomRow) == false)
+                        if (CanPlaceShip(direction, randomX, randomY) == false)
                         {
                             isOpen = true;
                             continue;
                         }
                         else
                         {
-                            for (r = randomRow; r < randomRow + Ship.Length; r++)
+                            for (r = randomY; r < randomY + Ship.Length; r++)
                             {
-                                grid[r, randomCol] = Ship.Symbol;
+                                grid[r, randomX] = Ship.Symbol;
                             }
                         }
                         isOpen = false;
-                    }            
+                    }                  
                 }
             }
         }
+
 
         int fireX;
         int fireY;
