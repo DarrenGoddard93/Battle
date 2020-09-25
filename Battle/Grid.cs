@@ -36,7 +36,6 @@ namespace Battle
                 {'0','0','0','0','0','0','0','0','0','0'}
         };
 
-
         public void DrawOcean()
         {
             Console.WriteLine("Guess the co-ordinates: \n");
@@ -59,8 +58,6 @@ namespace Battle
             new Ship("Battleship", 4, 'B'),   //Ship[1]
             new Ship("Submarine", 3, 'S'),    //Ship[2]
          };
-
-
 
         public bool CanPlaceShip(int direction, int randomCol, int randomRow)
         {
@@ -105,14 +102,8 @@ namespace Battle
                     int randomCol = rand.Next(0, 10);
                     int randomRow = rand.Next(0, 10);
                     int direction = rand.Next(0, 2); //0 for Horizontal
-
                     int c;
                     int r;
-
-                    Console.WriteLine($"My ship will take Col (x coord) {randomCol}");
-                    Console.WriteLine($"My ship will take row (y cord) {randomRow}");
-                    Console.WriteLine($"My direction will be {direction}");
-                    Console.ReadLine();
 
                     if (direction == 0)
                     {
@@ -156,12 +147,10 @@ namespace Battle
                             }
                         }
                         isOpen = false;
-                    }
-                   
+                    }            
                 }
             }
         }
-
 
         int fireX;
         int fireY;
